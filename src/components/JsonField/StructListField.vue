@@ -14,7 +14,7 @@
 
 <script setup>
 
-import { ref, computed, onMounted ,reactive} from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import { getTypeComponentMap, getTypeNameMap } from '../utils/typeMap'
 import StructField from './StructField.vue'
 import AppendButton from '../ListOperation/AppendButton.vue'
@@ -36,14 +36,14 @@ const getBaseStruct = (structId) => {
 }
 
 function getDefaultValue() {
-    return JSON.parse(JSON.stringify({
+    return reactive({
         param_type: 'Struct',
         value: {
             structId: modelValue.value.value.structId,
             type: 'Struct',
             value: getBaseStruct(modelValue.value.value.structId).value.map(item => ({ ...item.value })) ?? [...[]]
         }
-    }))
+    })
 }
 
 </script>
