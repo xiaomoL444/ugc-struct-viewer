@@ -1,11 +1,16 @@
 <template>
-    <div v-for="(item, index) in modelValue.value" :key="index">
-        <input type="number" step="0.01" v-model="vecListRef[index][0]" placeholder="X" />
-        <input type="number" step="0.01" v-model="vecListRef[index][1]" placeholder="Y" />
-        <input type="number" step="0.01" v-model="vecListRef[index][2]" placeholder="Z" />
-        <AddOrRemoveButtons v-model="vecListRef" :index="index" :default-value="getDefaultValue()"></AddOrRemoveButtons>
+    <div class="fieldListContain">
+        <div class="fieldListElement" v-for="(item, index) in modelValue.value" :key="index">
+            <div style="display: flex;flex-direction: row; gap: 0.5rem;align-items: center;" class="balckmode-suit">
+                X:<input class="input" type="number" step="0.01" v-model="vecListRef[index][0]" placeholder="X" />
+                Y:<input class="input" type="number" step="0.01" v-model="vecListRef[index][1]" placeholder="Y" />
+                Z:<input class="input" type="number" step="0.01" v-model="vecListRef[index][2]" placeholder="Z" />
+                <AddOrRemoveButtons v-model="vecListRef" :index="index" :default-value="getDefaultValue()">
+                </AddOrRemoveButtons>
+            </div>
+        </div>
+        <AppendButton v-model="vecListRef" :default-value="getDefaultValue()"></AppendButton>
     </div>
-    <AppendButton v-model="vecListRef" :default-value="getDefaultValue()"></AppendButton>
 </template>
 
 <script setup>

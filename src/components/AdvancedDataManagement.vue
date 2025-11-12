@@ -1,37 +1,47 @@
 <template>
-  <div class="container">
-    <Title :title="'高级数据管理的结构体'"></Title>
-    <ul>
-      <li v-for="item in list" :key="item.id">
-        {{ item.name }},id:{{ item.basic_struct_id }}
-      </li>
-    </ul>
+  <div style="display: flex ; flex-direction: column;flex:1">
+    <Title style="flex: 1;" :title="'高级数据管理结构体'"></Title>
 
-    <input type="file" @change="onFileChange" accept=".json" />
-    <button @click="clearCache">清除缓存</button>
+    <div style="flex: 17;" class="container">
+      <div v-for="(item, index) in modelValue" :key="item.id">
+        <SelectButton :title="item.name" :id="item.basic_struct_id" :isActive="selected === index"
+          @select="selected = index">
+          <HoverExpandButton>
+            <button title="删除该元素" :class="['operate-button']" style="--btn-bg: #FF000050; --btn-bg-hover: #FF0000CC;"
+              v-on:click="modelValue.splice(index, 1)">-</button>
+          </HoverExpandButton>
+        </SelectButton>
+      </div>
+    </div>
+    <FileOperation style="flex: 1;" @blue-click="triggerFileInput" @delete-all-click="clearCache"></FileOperation>
   </div>
+
+  <!-- 隐藏的文件输入 -->
+  <input type="file" ref="fileInput" @change="onFileChange" accept=".json" style="display: none" />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import Title from './Layout/Title.vue'
+import SelectButton from './Layout/SelectButton.vue'
+import FileOperation from './ListOperation/FileOperation.vue'
+import Collapse from './Layout/Collapse.vue'
+import HoverExpandButton from './Layout/HoverExpandButton.vue'
 
-const list = ref([])
+const selected = ref(-1)
+
+const modelValue = defineModel()
 
 // 本地缓存 key - 基础结构体
 const STORAGE_KEY = 'BasicStruct'
 
 const emit = defineEmits(['onChange'])
 
-// 页面挂载时读取缓存
-onMounted(() => {
-  const cached = localStorage.getItem(STORAGE_KEY)
-  if (cached) {
-    list.value = JSON.parse(cached)
-    emit('onChange', list.value)//刷新数据
-    console.log('从缓存加载数据')
-  }
-})
+const fileInput = ref(null)
+function triggerFileInput() {
+  fileInput.value.click()
+  fileInput.value.value = null
+}
 
 // 文件选择事件
 const onFileChange = async (event) => {
@@ -49,7 +59,7 @@ const onFileChange = async (event) => {
       alert('请输入有效10位长度的整数ID！')
       return
     }
-    if (list.value.some(item => item.basic_struct_id == inputId)) {
+    if (modelValue.value.some(item => item.basic_struct_id == inputId)) {
       alert('已存在该id的结构体！请重新添加')
       return
     }
@@ -59,11 +69,9 @@ const onFileChange = async (event) => {
     data.basic_struct_id = inputId;
 
     // 更新列表，为列表添加值
-    list.value.push(data);
+    modelValue.value.push(data);
 
-    // 存入缓存
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list.value))
-    emit('onChange', list.value)//刷新数据
+
     console.log('已读取文件并缓存')
   } catch (err) {
     console.error('读取文件失败:', err)
@@ -73,8 +81,7 @@ const onFileChange = async (event) => {
 
 // 清除缓存
 const clearCache = () => {
-  localStorage.removeItem(STORAGE_KEY)
-  list.value = []
-  console.log('已清除缓存')
+  modelValue.value = [];
+  console.log('已清除变量')
 }
 </script>

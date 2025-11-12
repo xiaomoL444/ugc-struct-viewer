@@ -1,37 +1,49 @@
 <template>
-    <div class="container">
-        <Title :title="'自定义变量'"></Title>
-        <ul>
-            <li v-for="item in list" :key="item.id">
-                <button @click="selectVariable(item)">选择：{{ item.name }},id:{{ item.basic_struct_id
-                    }}</button>
-            </li>
-        </ul>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        <input type="file" @change="onFileChange" accept=".json" />
-        <button @click="clearCache">清除缓存</button>
+    <div style="display: flex ; flex-direction: column;flex:1">
+        <Title style="flex: 1;" :title="'自定义变量'"></Title>
+        <div style="flex: 17;" class="container">
+            <div v-for="(item, index) in modelValue" :key="item.id">
+                <SelectButton :title="item.name" :id="item.basic_struct_id" :isActive="selected === index"
+                    @select="selected = index; selectVariable(index)">
+                    <HoverExpandButton>
+                        <div style="display: flex; flex-direction: row; gap: 2rem;">
+                            <button title="删除该元素" :class="['operate-button']"
+                                style="--btn-bg: #FF000050; --btn-bg-hover: #FF0000CC;"
+                                v-on:click="modelValue.splice(index, 1)">-</button>
+                        </div>
+                    </HoverExpandButton>
+                </SelectButton>
+            </div>
+        </div>
+        <FileOperation style="flex: 1;" @blue-click="triggerFileInput" @delete-all-click="clearCache"></FileOperation>
     </div>
+
+    <!-- 隐藏的文件输入 -->
+    <input type="file" ref="fileInput" @change="onFileChange" accept=".json" style="display: none" />
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import Title from './Layout/Title.vue'
-const list = ref([])
+import SelectButton from './Layout/SelectButton.vue'
+import FileOperation from './ListOperation/FileOperation.vue';
+import HoverExpandButton from './Layout/HoverExpandButton.vue';
 
-// 本地缓存 key - 基础结构体
-const STORAGE_KEY = 'VariableStruct'
+const modelValue = defineModel();
+
+const selected = ref(-1);
 
 const emit = defineEmits(['onSelect'])
 
-// 页面挂载时读取缓存
-onMounted(() => {
-    const cached = localStorage.getItem(STORAGE_KEY)
-    if (cached) {
-        list.value = JSON.parse(cached)
-        console.log('从缓存加载数据')
-    }
-})
+const fileInput = ref(null)
+function triggerFileInput() {
+    fileInput.value.click()
+    fileInput.value.value = null
+}
+
 
 // 文件选择事件
 const onFileChange = async (event) => {
@@ -44,29 +56,26 @@ const onFileChange = async (event) => {
 
         // 输入是整数
         //设置结构体的ID
-        data.basic_struct_id = uuidv4();
+        data.basic_struct_id = uuidv4().slice(0, 8);
+        data.name = file.name;
 
         // 更新列表，为列表添加值
-        list.value.push(data);
+        modelValue.value.push(data);
 
-        // 存入缓存
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(list.value))
         console.log('已读取文件并缓存')
     } catch (err) {
         console.error('读取文件失败:', err)
         alert('JSON 文件格式错误')
     }
 }
-
 // 清除缓存
 const clearCache = () => {
-    localStorage.removeItem(STORAGE_KEY)
-    list.value = []
+    modelValue.value = [];
     console.log('已清除缓存')
 }
 
-const selectVariable = (variable) => {
-    console.log("select " + variable);
-    emit('onSelect', variable)
+const selectVariable = (index) => {
+    console.log("select " + index);
+    emit('onSelect', index)
 }
 </script>

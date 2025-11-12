@@ -1,5 +1,7 @@
 <template>
-    <input type="text" v-model="modelValue.value">
+    <div class="fieldComponent">
+        <input class="input" type="text" v-model="modelValue.value" placeholder="字符串">
+    </div>
 </template>
 
 <script setup>

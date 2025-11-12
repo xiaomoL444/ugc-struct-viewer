@@ -17,18 +17,19 @@ const props = defineProps({
 
 <style scoped>
 .MainBox {
+    box-shadow: inset 0 0 0 0.01rem #00000050;
     /* text-align: center; */
     display: flex;
     /* justify-content: center; */
     /* 水平居中 */
     align-items: center;
-    height: 2vw;
-    padding-left: 0.5vw;
+    height: 2.5rem;
+    padding-left: 0.5rem;
 }
 
 
 .title {
-    height: 2vw;
+    height: 2rem;
     color: black;
     display: flex;
     /* justify-content: center; */
@@ -38,7 +39,7 @@ const props = defineProps({
 
     font-weight: 700;
     /* 粗体 */
-    font-size: 1.5vw;
+    font-size: 1.75rem;
     /* 放大一点好看 */
     background: linear-gradient(225deg, #6a5acd, #00bfff);
     /* 紫 → 蓝 */

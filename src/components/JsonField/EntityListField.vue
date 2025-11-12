@@ -1,9 +1,12 @@
 <template>
-    <div v-for="(item, index) in modelValue.value" :key="index">
-        {{ modelValue.value[index] }}
-        <AddOrRemoveButtons v-model="modelValue.value" :index="index" :default-value="'0'"></AddOrRemoveButtons>
+    <div class="fieldListContain">
+        <div v-bind:class="['fieldListElement', 'balckmode-suit']" v-for="(item, index) in modelValue.value"
+            :key="index">
+            {{ modelValue.value[index] }}
+            <AddOrRemoveButtons v-model="modelValue.value" :index="index" :default-value="'0'"></AddOrRemoveButtons>
+        </div>
+        <AppendButton v-model="modelValue.value" :default-value="'0'"></AppendButton>
     </div>
-    <AppendButton v-model="modelValue.value" :default-value="'0'"></AppendButton>
 </template>
 
 <script setup>
