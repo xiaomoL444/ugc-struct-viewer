@@ -39,8 +39,8 @@ watch(() => props.defaultOpen, val => {
 
 <style scoped>
 .collapse {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 0.75rem;
+    border: 1px solid #00000025;
+    border-radius: 0.5rem;
     background: rgba(255, 255, 255, 0.05);
     margin: 0.5rem 0;
     transition: all 0.3s ease;
@@ -88,5 +88,9 @@ watch(() => props.defaultOpen, val => {
 .fade-leave-from {
     opacity: 1;
     max-height: 500px;
+}
+
+.content {
+    padding-bottom: 1rem;
 }
 </style>

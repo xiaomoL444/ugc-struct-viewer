@@ -8,7 +8,7 @@
 
                 <div v-if="modelValue.value.value[index] == null"> {{ item.key }} {{
                     getTypeNameMap()[item.param_type]
-                    }}:无内容，请从编辑器中重新导出变量</div>
+                }}:无内容，请从编辑器中重新导出变量</div>
                 <div v-else>
                     <div class="field"
                         :style="{ flexDirection: (['StructList', 'Struct', 'Dict'].includes(item.param_type)) ? 'column' : 'row' }">
@@ -34,7 +34,7 @@
     /* position: relative; */
     background-color: white;
     border-radius: 0.5rem;
-    padding: 0.5rem  0;
+    padding: 0.5rem 0;
     margin-top: 0.5rem;
     height: auto;
     display: flex;
@@ -60,6 +60,7 @@
     font-size: 1rem;
     font-weight: 600;
     color: black;
+    white-space: nowrap;
     /* background: #f0f0f0; */
     /* border: 1px solid #ccc; */
 }

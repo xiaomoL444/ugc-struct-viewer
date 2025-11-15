@@ -49,6 +49,13 @@ defineEmits(['select']) // 通知父组件我被点击了
     box-sizing: border-box;
     text-align: left;
 
+    word-break: break-word;
+    /* 英文单词也能换行 */
+    white-space: pre-wrap;
+    /* 保留换行符并允许自动换行 */
+    overflow-wrap: break-word;
+    /* 补充换行策略 */
+
 }
 
 .SelectButton:hover {

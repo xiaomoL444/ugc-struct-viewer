@@ -9,7 +9,9 @@
             <div v-if="modelValue?.value" class="fieldComponent">
                 <input class="input" type="text" v-model="modelValue.value.name" placeholder="字符串">
             </div>
-            <StructField v-model="modelValue" :basic-struct-list="basicStructList"></StructField>
+            <component :is="getTypeComponentMap()[modelValue.param_type]" v-model="modelValue"
+                :basicStructList="basicStructList" />
+            <!-- <StructField v-model="modelValue" :basic-struct-list="basicStructList"></StructField> -->
         </div>
     </div>
 </template>
@@ -19,6 +21,7 @@ import StructField from './JsonField/StructField.vue'
 import Title from './Layout/Title.vue';
 
 import { ref, watch } from 'vue'
+import { getTypeComponentMap } from './utils/typeMap';
 
 const emit = defineEmits(['onDownload'])
 
@@ -29,7 +32,7 @@ const props = defineProps({
 const modelValue = defineModel() // Vue 3.4 之后的新写法
 
 watch(modelValue, (newVal) => {
-    if (modelValue.value && modelValue.value.value.name === '') {
+    if (modelValue.value.value && modelValue.value.value.name === '') {
         try {
             modelValue.value.value.name = '无标题';
         } catch {

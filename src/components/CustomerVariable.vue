@@ -34,7 +34,7 @@ import HoverExpandButton from './Layout/HoverExpandButton.vue';
 
 const modelValue = defineModel();
 
-const selected = ref(-1);
+const selected = ref(0);
 
 const emit = defineEmits(['onSelect'])
 

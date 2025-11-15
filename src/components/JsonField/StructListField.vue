@@ -9,7 +9,8 @@
                     <StructField v-model="modelValue.value.value[index]" :basicStructList="basicStructList">
                     </StructField>
                 </Collapse>
-                <AddOrRemoveButtons v-model="modelValue.value.value" :index="index" :default-value="getDefaultValue()">
+                <AddOrRemoveButtons style="padding: 0.8rem 0 0 0.8rem" v-model="modelValue.value.value" :index="index"
+                    :default-value="getDefaultValue()">
                 </AddOrRemoveButtons>
             </div>
         </div>

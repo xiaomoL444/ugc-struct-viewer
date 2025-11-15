@@ -14,6 +14,8 @@
     background-color: var(--bg-color, #ccc);
     color: var(--color, #FFF);
     font-weight: 550;
+    white-space: nowrap;
+    /* 阻止换行 */
 }
 </style>
 

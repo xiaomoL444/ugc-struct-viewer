@@ -1,4 +1,5 @@
 <template>
+  <Toaster />
   <div class="MainContain" style="background-color: white;">
     <div style="/* text-align: center; */
   display: flex;
@@ -7,6 +8,7 @@
   align-items: center;
     flex: 1.2;
   padding-left: 2rem;   background: linear-gradient(90deg, #6a5acd, #00bfff);">
+      <img src="/images/7.ico" style="height: 2.5rem; width: 2.5rem; margin-right: 1rem;"></img>
       <h2 class="title">结构体编辑</h2>
     </div>
     <div class="boxs">
@@ -28,49 +30,122 @@
         <VideoListModal modalTitle="精选视频" :videos="[
           { cover: './images/video1.png', title: '你一定会用得上的UGC对话框模版地图 /对话/剧情/rpg/解密/免费分享/千星奇域/UGC', link: 'https://www.bilibili.com/video/BV1fYsGz1EpA/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
           { cover: '/images/video2.png', title: '拯救你的特效！全特效在线预览工具！【原神千星奇域】', link: 'https://www.bilibili.com/video/BV1nt1YBGEKH/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
-          { cover: '/images/video3.png', title: '「千星奇域黑科技01」无法传送造物？别急！我有方案！', link: 'https://www.bilibili.com/video/BV19YsbzSErW/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' }
+          { cover: '/images/video3.png', title: '「千星奇域黑科技01」无法传送造物？别急！我有方案！', link: 'https://www.bilibili.com/video/BV19YsbzSErW/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
+          { cover: '/images/video4.png', title: '「千星奇域黑科技02」无需计算！以邪修的方式在服务器获取角色挂接点的位置信息！/如何获取跟随运动器物体的位置/获取角色的实时位置', link: 'https://www.bilibili.com/video/BV1Bdspz6Egy/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' }
         ]" />
         <!-- <button @click="downloadJson">📦 导出 JSON</button> -->
       </div>
-
     </div>
   </div>
 </template>
+
 <script setup>
-import { ref, watch, onMounted, computed } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount, nextTick, computed } from 'vue'
 import AdvancedDataManagement from './components/AdvancedDataManagement.vue'
 import CustomerVariable from './components/CustomerVariable.vue';
 import './styles/global.css'   // ✅ 引入全局 CSS
 import JsonEditor from './components/JsonEditor.vue';
 import UserBadge from './components/Label/UserBadge.vue';
 import VideoListModal from './components/Label/VideoListModal.vue';
+import cloneDeep from 'lodash/cloneDeep'
+import 'vue-sonner/style.css'
+import { Toaster, toast } from 'vue-sonner'
 
 const STORAGE_KEY = 'xiaomoL444-Save'
 
 const SaveData = ref({ advancedDataStruct: [], structData: [] });
+const undoStack = ref([])
+const redoStack = ref([])
+// ✅ 增加一个“是否是手动修改”的标志
+let isProgrammaticChange = false
 
-const variableSelect = ref(-1);
-const structData = ref();
+const variableSelect = ref(0);
+const structData = computed(() => ({
+  param_type: SaveData.value.structData[variableSelect.value]?.type,
+  value: SaveData.value.structData[variableSelect.value]
+}))
 
 
+let oldValue = {};
 // 页面挂载时读取缓存
 onMounted(() => {
   const cached = localStorage.getItem(STORAGE_KEY)
   if (cached) {
+    isProgrammaticChange = true;
     SaveData.value = JSON.parse(cached)
+    oldValue = JSON.parse(JSON.stringify(SaveData.value));
     console.log('从缓存加载数据')
+    nextTick(() => {
+      isProgrammaticChange = false;
+    });
   }
+  window.addEventListener('keydown', handleKey);
 })
-
-watch(variableSelect, () => {
-  structData.value = {
-    param_type: 'Struct', value: SaveData.value.structData[variableSelect.value]
-  }
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKey)
 })
 watch(SaveData, (newVal) => {
   console.log('structList 变化了！', newVal)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(SaveData.value))
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(newVal))//保存值
+  // 记录重做
+  if (!isProgrammaticChange) {  // 🚫 不记录由撤销/重做引起的修改
+
+    if (oldValue !== null) {
+      console.log('记录历史记录');
+      undoStack.value.push(cloneDeep(oldValue))
+      redoStack.value = [] // 只在用户输入时清空重做
+    }
+  }
+  oldValue = JSON.parse(JSON.stringify(newVal));
 }, { deep: true })
+
+function handleKey(e) {
+  if (e.ctrlKey && e.key === 'z') {
+    e.preventDefault()
+    undo()
+  } else if (e.ctrlKey && e.key === 'y') {
+    e.preventDefault()
+    redo()
+  }
+  else if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault() // 阻止浏览器默认保存行为
+    // 调用你自己的保存函数
+    downloadJson();
+  }
+}
+
+// 🔹 撤销
+function undo() {
+  if (undoStack.value.length === 0) {
+    toast('无可撤销的内容', { position: 'top-center' })
+    return
+  }
+  const prev = undoStack.value.pop()
+  redoStack.value.push(cloneDeep(SaveData.value))
+  isProgrammaticChange = true   // ✅ 暂停监听
+  SaveData.value = prev
+  toast.success('撤回成功,可撤销步骤剩余' + undoStack.value.length, { position: 'top-center' })
+  nextTick(() => {
+    isProgrammaticChange = false
+  });
+}
+
+// 🔹 重做
+function redo() {
+  if (redoStack.value.length === 0) {
+    toast('无可复原的内容', { position: 'top-center' })
+    return
+  }
+  const next = redoStack.value.pop()
+  undoStack.value.push(cloneDeep(SaveData.value))
+  isProgrammaticChange = true   // ✅ 暂停监听
+  SaveData.value = next
+  toast.success('已复原，可复原步骤剩余' + redoStack.value.length, { position: 'top-center' })
+  nextTick(() => {
+    isProgrammaticChange = false
+  });
+}
+
 
 const onAdvancedDataStructChange = (data) => {
   advancedDataStruct.value = data
@@ -157,7 +232,8 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'MyFont'
+  font-size: 90%;
+  /* 让所有 rem 缩小为原来的 0.9 倍 */
 }
 
 /* 根 div 撑满页面 */
