@@ -2,7 +2,8 @@
     <div class="fieldListContain">
         <div class="fieldListElement" v-for="(item, index) in modelValue.value" :key="index">
             <div class="fieldComponent">
-                <input class="input" type="number" step="0.01" v-model="modelValue.value[index]" placeholder="浮点数">
+                <input class="input" type="number" step="0.01" :value="modelValue.value[index]"
+                    @input="e => modelValue.value[index] = e.target.value" placeholder="浮点数">
                 <AddOrRemoveButtons v-model="modelValue.value" :index="index" :default-value="'0.00'">
                 </AddOrRemoveButtons>
             </div>
