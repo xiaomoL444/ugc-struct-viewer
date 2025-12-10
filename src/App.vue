@@ -1,6 +1,6 @@
 <template>
   <Toaster />
-  <div v-if="host === 'localhost'">
+  <div v-if="host === 'pigest.top'">
     <!-- 整个页面使用全屏 flex + center 对齐 -->
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
       <!-- 内容容器 -->
@@ -208,7 +208,7 @@ function ImportFormOldDomain() {
   
   请再次确认你自己在做什么再使用这个功能
   
-  请输入pigest.top/UGCStructViewer提供的缓存数据`, '{advancedDataStruct: [],structData:[]}')
+  请输入pigest.top/UGCStructViewer提供的缓存数据`, '{"advancedDataStruct":[],"structData":[]}')
 
   if (input == '') return;
 
