@@ -210,8 +210,7 @@ function ImportFormOldDomain() {
   
   请输入pigest.top/UGCStructViewer提供的缓存数据`, '{"advancedDataStruct":[],"structData":[]}')
 
-  if (input == '') return;
-
+  if (input == null) return;
   try {
     SaveData.value.advancedDataStruct = JSON.parse(input).advancedDataStruct;
     SaveData.value.structData = JSON.parse(input).structData;
