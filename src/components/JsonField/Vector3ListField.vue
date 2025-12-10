@@ -5,11 +5,11 @@
                 X:<input class="input" type="number" step="0.01" v-model="vecListRef[index][0]" placeholder="X" />
                 Y:<input class="input" type="number" step="0.01" v-model="vecListRef[index][1]" placeholder="Y" />
                 Z:<input class="input" type="number" step="0.01" v-model="vecListRef[index][2]" placeholder="Z" />
-                <AddOrRemoveButtons v-model="vecListRef" :index="index" :default-value="getDefaultValue()">
+                <AddOrRemoveButtons v-model="vecListRef" :index="index" :default-value="getDefaultValue">
                 </AddOrRemoveButtons>
             </div>
         </div>
-        <AppendButton v-model="vecListRef" :default-value="getDefaultValue()"></AppendButton>
+        <AppendButton v-model="vecListRef" :default-value="getDefaultValue"></AppendButton>
     </div>
 </template>
 
@@ -35,7 +35,7 @@ watch(vecListRef, (newList) => {
     modelValue.value.value = newList.map(vec => vec.join(','))
 }, { deep: true })
 
-function getDefaultValue() { return [0, 0, 0] }
+function getDefaultValue() { returns[0, 0, 0] }
 
 // 用于强制刷新组件的 key
 

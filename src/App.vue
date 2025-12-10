@@ -26,7 +26,7 @@
           name="creater:戀祈" link="https://space.bilibili.com/609872107" :openInNewTab="true" />
         <UserBadge
           avatar="https://images.weserv.nl/?url=https://i1.hdslb.com/bfs/face/d5ef4327d11e8ea4be6f089a491cdf94bd95c2e0.jpg"
-          name="PowerBy:小猪之最ThePig" link="https://space.bilibili.com/381671770" :openInNewTab="true" />
+          name="Special Thanks:小猪之最ThePig" link="https://space.bilibili.com/381671770" :openInNewTab="true" />
         <VideoListModal modalTitle="精选视频" :videos="[
           { cover: './images/video1.png', title: '你一定会用得上的UGC对话框模版地图 /对话/剧情/rpg/解密/免费分享/千星奇域/UGC', link: 'https://www.bilibili.com/video/BV1fYsGz1EpA/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
           { cover: '/images/video2.png', title: '拯救你的特效！全特效在线预览工具！【原神千星奇域】', link: 'https://www.bilibili.com/video/BV1nt1YBGEKH/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },

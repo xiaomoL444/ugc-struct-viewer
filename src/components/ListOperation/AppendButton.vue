@@ -1,6 +1,6 @@
 <template>
     <button :class="['button', 'operate-button']" class="button" style="--btn-bg: #00008050; --btn-bg-hover: #000080CC;"
-        v-on:click="modelValue.push(defaultValue)">+</button>
+        v-on:click="modelValue.push(defaultValue())">+</button>
 </template>
 
 <style scoped>
@@ -14,6 +14,6 @@
 const modelValue = defineModel()//传入一个列表
 
 const props = defineProps({
-    defaultValue: { type: Object, required: true }
+    defaultValue: { type: Function, required: true }
 });
 </script>

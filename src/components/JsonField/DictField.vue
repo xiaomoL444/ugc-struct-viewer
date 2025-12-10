@@ -23,13 +23,13 @@
 
                     </div>
                     <AddOrRemoveButtons v-model="modelValue.value.value" :index="index"
-                        :default-value="getDefaultValue()">
+                        :default-value="getDefaultValue">
                     </AddOrRemoveButtons>
                 </div>
 
             </div>
         </div>
-        <AppendButton v-model="modelValue.value.value" :default-value="getDefaultValue()"></AppendButton>
+        <AppendButton v-model="modelValue.value.value" :default-value="getDefaultValue"></AppendButton>
     </div>
 </template>
 

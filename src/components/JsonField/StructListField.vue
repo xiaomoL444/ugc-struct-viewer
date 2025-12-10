@@ -10,11 +10,11 @@
                     </StructField>
                 </Collapse>
                 <AddOrRemoveButtons style="padding: 0.8rem 0 0 0.8rem" v-model="modelValue.value.value" :index="index"
-                    :default-value="getDefaultValue()">
+                    :default-value="getDefaultValue">
                 </AddOrRemoveButtons>
             </div>
         </div>
-        <AppendButton v-model="modelValue.value.value" :default-value="getDefaultValue()"></AppendButton>
+        <AppendButton v-model="modelValue.value.value" :default-value="getDefaultValue"></AppendButton>
     </div>
 </template>
 
@@ -51,14 +51,14 @@ const getBaseStruct = (structId) => {
 }
 
 function getDefaultValue() {
-    return reactive({
+    return JSON.parse(JSON.stringify({
         param_type: 'Struct',
         value: {
             structId: modelValue.value.value.structId,
             type: 'Struct',
             value: getBaseStruct(modelValue.value.value.structId).value.map(item => ({ ...item.value })) ?? [...[]]
         }
-    })
+    }))
 }
 
 </script>

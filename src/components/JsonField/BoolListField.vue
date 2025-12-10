@@ -7,17 +7,21 @@
                         <option value="True">是</option>
                         <option value="False">否</option>
                     </select>
-                    <AddOrRemoveButtons  v-model="modelValue.value" :index="index" :default-value="'False'">
+                    <AddOrRemoveButtons v-model="modelValue.value" :index="index" :default-value="getDefaultValue">
                     </AddOrRemoveButtons>
                 </div>
             </div>
         </div>
-        <AppendButton v-model="modelValue.value" :default-value="'False'"></AppendButton>
+        <AppendButton v-model="modelValue.value" :default-value="getDefaultValue"></AppendButton>
     </div>
 </template>
 
 <script setup>
 import AddOrRemoveButtons from '../ListOperation/AddOrRemoveButtons.vue';
 import AppendButton from '../ListOperation/AppendButton.vue';
-const modelValue = defineModel() 
+const modelValue = defineModel()
+
+function getDefaultValue() {
+    return 'False'
+}
 </script>
