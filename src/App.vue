@@ -1,6 +1,41 @@
 <template>
   <Toaster />
-  <div class="MainContain" style="background-color: white;">
+  <div v-if="host === 'localhost'">
+    <!-- 整个页面使用全屏 flex + center 对齐 -->
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+      <!-- 内容容器 -->
+      <div class="text-center">
+        <!-- 大标题 -->
+        <h1 class="text-5xl font-bold text-red-600 mb-6">
+          该网页已迁移至新域名
+        </h1>
+
+        <!-- 新域名链接 -->
+        <p class="text-lg mb-6">
+          访问新网站：
+          <a :href="newDomain" target="_blank" class="text-blue-600 underline">{{ newDomain }}</a>
+        </p>
+
+        <!-- 复制缓存提示 -->
+        <div class="mb-6">
+          <p class="text-gray-700 mb-2">
+            你可以点击下面按钮，将缓存数据复制下来，迁移到新域名：
+          </p>
+          <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" @click="copyCache">
+            复制缓存数据
+          </button>
+
+          <p>{{ SaveData }}</p>
+        </div>
+
+        <!-- 复制状态提示 -->
+        <p v-if="copied" class="text-green-600 mt-2">缓存数据已复制到剪贴板！</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div v-else class="MainContain" style="background-color: white;" :hidden='true'>
     <div style="/* text-align: center; */
   display: flex;
   /* justify-content: center; */
@@ -21,6 +56,7 @@
         :basic-struct-list="SaveData.advancedDataStruct">
       </JsonEditor>
       <div class="user-badge-container">
+        <UserBadge :avatar="img" name="从旧域名迁移数据" :function="ImportFormOldDomain" />
         <UserBadge
           avatar="https://images.weserv.nl/?url=https://i1.hdslb.com/bfs/face/b94d505e6be9b2504f6fa23c0030751b23f54e5f.jpg"
           name="creater:戀祈" link="https://space.bilibili.com/609872107" :openInNewTab="true" />
@@ -50,6 +86,25 @@ import VideoListModal from './components/Label/VideoListModal.vue';
 import cloneDeep from 'lodash/cloneDeep'
 import 'vue-sonner/style.css'
 import { Toaster, toast } from 'vue-sonner'
+
+import img from '@/assets/images/7.ico'
+
+const host = window.location.hostname;
+const newDomain = 'https://tool.xiaomol444.xyz/UGCStructViewer';
+const copied = ref(false)
+
+function copyCache() {
+
+  const cacheData = JSON.stringify(SaveData.value)
+  navigator.clipboard.writeText(cacheData)
+    .then(() => {
+      copied.value = true
+      setTimeout(() => copied.value = false, 3000)
+    })
+    .catch(() => alert('复制失败，请手动复制'))
+}
+
+
 
 const STORAGE_KEY = 'xiaomoL444-Save'
 
@@ -146,6 +201,25 @@ function redo() {
   });
 }
 
+function ImportFormOldDomain() {
+  let input = prompt(`注意：！如果你是从pigest.top/UGCStructViewer（即该工具的前域名）来的，才能使用该功能
+
+  该功能会直接！覆盖该网页的所有配置，当然，你也可以用这个重置本网页的缓存配置
+  
+  请再次确认你自己在做什么再使用这个功能
+  
+  请输入pigest.top/UGCStructViewer提供的缓存数据`, '{advancedDataStruct: [],structData:[]}')
+
+  if (input == '') return;
+
+  try {
+    SaveData.value.advancedDataStruct = JSON.parse(input).advancedDataStruct;
+    SaveData.value.structData = JSON.parse(input).structData;
+  } catch {
+    alert('导入失败！')
+  }
+
+}
 
 const onAdvancedDataStructChange = (data) => {
   advancedDataStruct.value = data

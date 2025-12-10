@@ -9,11 +9,16 @@
 const props = defineProps({
   avatar: { type: String, required: true },
   name: { type: String, required: true },
-  link: { type: String, required: true },
-  openInNewTab: { type: Boolean, default: false }
+  link: { type: String, required: false },
+  openInNewTab: { type: Boolean, default: false },
+  function: { type: Function, required: false }
 })
 
 const handleClick = () => {
+  if (props.link == null) {
+    props.function();
+    return;
+  }
   if (props.openInNewTab) {
     window.open(props.link, '_blank')
   } else {
