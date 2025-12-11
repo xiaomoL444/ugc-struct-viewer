@@ -45,6 +45,24 @@
   /* 颜色渐变 */
 }
 
+textarea {
+  width: 100%;
+  border: none;
+  /* 去掉默认边框 */
+  border-bottom: 1px solid #ccc;
+  /* 初始底线 */
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.3s;
+  /* 颜色渐变 */
+  font-family: Arial;
+  overflow: hidden;
+  resize: none;
+    line-height: 1.4;   /* 或直接设置 px 高度，如 24px */
+}
+
 .fieldListContain {
   display: flex;
   flex-direction: row;
@@ -89,27 +107,27 @@
 }
 
 .custom-select {
-    appearance: none;
-    /* 移除默认样式 */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    background-color: white;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='5'><polygon points='0,0 10,0 5,5' fill='%23999'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    cursor: pointer;
-    font-size: 1rem;
+  appearance: none;
+  /* 移除默认样式 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background-color: white;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='5'><polygon points='0,0 10,0 5,5' fill='%23999'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .custom-select:focus {
-    border-color: #3b82f6;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
-.balckmode-suit{
+.balckmode-suit {
   color: black;
 }

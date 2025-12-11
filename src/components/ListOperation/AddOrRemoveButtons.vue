@@ -8,7 +8,7 @@
             <button title="删除该元素" :class="['operate-button']" style="--btn-bg: #FF000050; --btn-bg-hover: #FF0000CC;"
                 v-on:click="modelValue.splice(index, 1)">-</button>
             <button title="从此新增" :class="['operate-button']" style="--btn-bg: #00FF0050; --btn-bg-hover: #00FF00CC;"
-                v-on:click="modelValue.splice(index + 1, 0, defaultValue)">+</button>
+                v-on:click="modelValue.splice(index + 1, 0, defaultValue())">+</button>
         </div>
     </HoverExpandButton>
 </template>
@@ -19,7 +19,7 @@ const modelValue = defineModel()//传入一个列表
 
 const props = defineProps({
     index: { type: Number, required: true },
-    defaultValue: { type: Object, required: true }
+    defaultValue: { type: Function, required: true }
 });
 
 function moveUp(items, index) {

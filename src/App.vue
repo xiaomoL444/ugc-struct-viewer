@@ -1,6 +1,6 @@
 <template>
   <Toaster />
-  <div v-if="host === 'pigest.top'">
+  <div v-if="host === 'www.pigest.top'">
     <!-- 整个页面使用全屏 flex + center 对齐 -->
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
       <!-- 内容容器 -->
@@ -64,10 +64,10 @@
           avatar="https://images.weserv.nl/?url=https://i1.hdslb.com/bfs/face/d5ef4327d11e8ea4be6f089a491cdf94bd95c2e0.jpg"
           name="Special Thanks:小猪之最ThePig" link="https://space.bilibili.com/381671770" :openInNewTab="true" />
         <VideoListModal modalTitle="精选视频" :videos="[
-          { cover: './images/video1.png', title: '你一定会用得上的UGC对话框模版地图 /对话/剧情/rpg/解密/免费分享/千星奇域/UGC', link: 'https://www.bilibili.com/video/BV1fYsGz1EpA/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
-          { cover: '/images/video2.png', title: '拯救你的特效！全特效在线预览工具！【原神千星奇域】', link: 'https://www.bilibili.com/video/BV1nt1YBGEKH/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
-          { cover: '/images/video3.png', title: '「千星奇域黑科技01」无法传送造物？别急！我有方案！', link: 'https://www.bilibili.com/video/BV19YsbzSErW/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
-          { cover: '/images/video4.png', title: '「千星奇域黑科技02」无需计算！以邪修的方式在服务器获取角色挂接点的位置信息！/如何获取跟随运动器物体的位置/获取角色的实时位置', link: 'https://www.bilibili.com/video/BV1Bdspz6Egy/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' }
+          { cover: getPic('http://i0.hdslb.com/bfs/archive/0b50eeef314e719bf2473c4127bde63d12b7eae6.jpg'), title: '你一定会用得上的UGC对话框模版地图 /对话/剧情/rpg/解密/免费分享/千星奇域/UGC', link: 'https://www.bilibili.com/video/BV1fYsGz1EpA/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
+          { cover: getPic('http://i0.hdslb.com/bfs/archive/34197a8078f426b4c7507c1ce3397f5ed86b4ea4.jpg'), title: '拯救你的特效！全特效在线预览工具！【原神千星奇域】', link: 'https://www.bilibili.com/video/BV1nt1YBGEKH/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
+          { cover: getPic('http://i1.hdslb.com/bfs/archive/837a503a2114d115914070e7d015a0c31e17da0b.jpg'), title: '「千星奇域黑科技01」无法传送造物？别急！我有方案！', link: 'https://www.bilibili.com/video/BV19YsbzSErW/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' },
+          { cover: getPic('http://i2.hdslb.com/bfs/archive/c010571a052616b68ea3dcbcdf936495a3d524fc.jpg'), title: '「千星奇域黑科技02」无需计算！以邪修的方式在服务器获取角色挂接点的位置信息！/如何获取跟随运动器物体的位置/获取角色的实时位置', link: 'https://www.bilibili.com/video/BV1Bdspz6Egy/?share_source=copy_web&vd_source=812e2c82e7fedf05055036fee2e3a635' }
         ]" />
         <!-- <button @click="downloadJson">📦 导出 JSON</button> -->
       </div>
@@ -88,6 +88,7 @@ import 'vue-sonner/style.css'
 import { Toaster, toast } from 'vue-sonner'
 
 import img from '@/assets/images/7.ico'
+import { getPic } from './components/utils/downloadPic';
 
 const host = window.location.hostname;
 const newDomain = 'https://tool.xiaomol444.xyz/UGCStructViewer';
